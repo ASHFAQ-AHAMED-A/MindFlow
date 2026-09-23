@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
-import { useNavigate } from 'react-router-dom';
 import AppointmentCard from '../components/AppointmentCard';
-import { Calendar, Clock, Info } from 'lucide-react';
+import { Calendar, Clock, Info, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function StudentAppointments() {
   const { state, dispatch } = useApp();
-  const navigate = useNavigate();
 
   // Student's appointments
   const myAppointments = state.appointments.filter(
@@ -85,83 +83,98 @@ export default function StudentAppointments() {
   const pastAppointments = myAppointments.filter(a => a.status === 'completed' || a.status === 'cancelled');
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-8 pb-12">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200/60">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">Appointments</h1>
-          <p className="text-sm text-slate-500 mt-1">Your upcoming and past appointments</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 heading-font tracking-tight">Your Care Appointments</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage scheduled sessions, priority check-ins, and automated standby matching</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+            {upcomingAppointments.length} Active Booking{upcomingAppointments.length !== 1 ? 's' : ''}
+          </span>
         </div>
       </div>
 
-      {/* Claimable Appointment Alert */}
+      {/* Claimable Earlier Slot Banner */}
       {claimableNotifications.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: -10, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          className="mb-6 p-5 rounded-2xl bg-gradient-to-r from-indigo-50 to-violet-50 border-2 border-indigo-200 shadow-md"
+          className="p-8 rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-700 text-white shadow-xl shadow-indigo-500/20"
         >
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-indigo-600" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-extrabold heading-font text-white">⚡ Earlier Appointment Slot Available!</h3>
+                <p className="text-indigo-100 text-sm mt-1 max-w-xl leading-relaxed">
+                  A cancellation just occurred. Because your case is prioritized on the Standby Queue, you are eligible to claim this slot immediately.
+                </p>
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="text-base font-bold text-indigo-900 mb-1">🔔 Earlier Appointment Available!</h3>
-              <p className="text-sm text-indigo-700">
-                An appointment slot has opened up. Claim it now before it's taken!
-              </p>
-              {/* Find the available cancelled appointment slot */}
-              {state.appointments
-                .filter(a => a.status === 'cancelled')
-                .slice(0, 1)
-                .map(apt => (
-                  <div key={apt.id} className="mt-3">
-                    <AppointmentCard
-                      appointment={{
-                        ...apt,
-                        status: 'scheduled',
-                        studentId: state.currentStudent.id,
-                      }}
-                      isClaimable
-                      onClaim={() => handleClaimSlot(apt.id)}
-                    />
-                  </div>
-                ))}
-            </div>
+
+            {/* Claim button */}
+            {state.appointments
+              .filter(a => a.status === 'cancelled')
+              .slice(0, 1)
+              .map(apt => (
+                <motion.button
+                  key={apt.id}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => handleClaimSlot(apt.id)}
+                  className="px-6 py-3.5 bg-white text-indigo-700 hover:bg-indigo-50 rounded-2xl text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Claim Early Slot</span>
+                </motion.button>
+              ))}
           </div>
         </motion.div>
       )}
 
-      {/* Standby Status */}
+      {/* Standby Status Card */}
       {myStandby.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200"
+          className="p-6 rounded-3xl bg-amber-50/80 backdrop-blur-sm border border-amber-200/80 shadow-xs"
         >
-          <div className="flex items-center gap-2 mb-1">
-            <Clock className="w-4 h-4 text-amber-600" />
-            <h3 className="text-sm font-semibold text-amber-800">You're on the Standby Queue</h3>
-          </div>
-          <p className="text-xs text-amber-700">
-            You'll be automatically notified when an earlier appointment becomes available, prioritized by your case urgency.
-          </p>
-          <div className="mt-2 flex items-center gap-2 text-xs text-amber-600">
-            <Info className="w-3 h-3" />
-            <span>Priority: {myStandby[0].priority.charAt(0).toUpperCase() + myStandby[0].priority.slice(1)}</span>
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0">
+              <Clock className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-base font-bold text-amber-900 heading-font">Active Standby Queue Position</h3>
+              <p className="text-xs sm:text-sm text-amber-800/90 mt-1 leading-relaxed">
+                You are queued for automatic cancellation backfill. The moment an earlier specialist slot becomes open, we will send an instant notification to your dashboard.
+              </p>
+              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-amber-100 text-amber-900 text-xs font-bold">
+                <Info className="w-3.5 h-3.5 text-amber-700" />
+                <span>Urgency Level: {myStandby[0].priority.toUpperCase()}</span>
+              </div>
+            </div>
           </div>
         </motion.div>
       )}
 
       {/* Upcoming Appointments */}
-      <div className="mb-8">
-        <h2 className="text-base font-semibold text-slate-900 mb-4">Upcoming</h2>
+      <div>
+        <h2 className="text-base font-bold text-slate-900 heading-font mb-4">Upcoming Scheduled Sessions</h2>
         {upcomingAppointments.length === 0 ? (
-          <div className="text-center py-8 bg-white rounded-2xl border border-slate-200/60">
-            <Calendar className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm text-slate-400">No upcoming appointments</p>
+          <div className="text-center py-16 bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/80 p-8 shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <h3 className="text-sm font-bold text-slate-700 mb-1">No Upcoming Appointments</h3>
+            <p className="text-xs text-slate-400">Your scheduled counselor check-ins will appear here.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingAppointments.map(apt => (
               <AppointmentCard key={apt.id} appointment={apt} />
             ))}
@@ -171,9 +184,9 @@ export default function StudentAppointments() {
 
       {/* Past Appointments */}
       {pastAppointments.length > 0 && (
-        <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-4">Past</h2>
-          <div className="grid grid-cols-2 gap-4">
+        <div className="pt-4">
+          <h2 className="text-base font-bold text-slate-900 heading-font mb-4">Past Sessions History</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {pastAppointments.map(apt => (
               <AppointmentCard key={apt.id} appointment={apt} />
             ))}
@@ -183,3 +196,4 @@ export default function StudentAppointments() {
     </div>
   );
 }
+

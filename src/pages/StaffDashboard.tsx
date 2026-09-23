@@ -13,6 +13,8 @@ import {
   Users,
   XCircle,
   ShieldAlert,
+  Radio,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function StaffDashboard() {
@@ -33,51 +35,84 @@ export default function StaffDashboard() {
   ).slice(0, 5);
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
+    <div className="space-y-10 pb-12">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-slate-200/60">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">Support Operations</h1>
-          <p className="text-sm text-slate-500 mt-1">Real-time overview of student support activity</p>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 heading-font tracking-tight">Support Operations Hub</h1>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Live Engine</span>
+            </div>
+          </div>
+          <p className="text-sm text-slate-500 mt-1">Real-time triage telemetry, active crisis clusters, and advisor workload allocation</p>
         </div>
-        <div className="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold border border-emerald-200">
-          ● Live
+
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => navigate('/staff/standby')}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200/80 hover:bg-slate-50 shadow-xs transition-colors"
+          >
+            <Radio className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Standby Radar</span>
+          </button>
+          <button
+            onClick={() => navigate('/staff/cases')}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors"
+          >
+            <span>Triage Stream</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
-        <StatCard icon={FileText} label="Active Cases" value={activeCases} color="indigo" />
-        <StatCard icon={AlertTriangle} label="High Priority" value={highPriority} color="amber" trend="12%" trendUp />
-        <StatCard icon={AlertOctagon} label="Urgent" value={urgent} color="red" />
-        <StatCard icon={Clock} label="Waiting" value={waiting} color="slate" />
+      {/* Primary Stats Grid */}
+      <div>
+        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Urgency & Case Load</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <StatCard icon={FileText} label="Active Open Cases" value={activeCases} color="indigo" />
+          <StatCard icon={AlertTriangle} label="High Priority" value={highPriority} color="amber" trend="12%" trendUp />
+          <StatCard icon={AlertOctagon} label="Immediate Crisis (Urgent)" value={urgent} color="red" />
+          <StatCard icon={Clock} label="Pending Review (Waiting)" value={waiting} color="slate" />
+        </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-8">
-        <StatCard icon={Calendar} label="Available Slots" value={availableSlots} color="emerald" />
-        <StatCard icon={Users} label="Standby Students" value={standbyStudents} color="indigo" />
-        <StatCard icon={XCircle} label="Cancellations Today" value={cancellationsToday} color="amber" />
-        <StatCard icon={ShieldAlert} label="SLA at Risk" value={slaAtRisk} color="red" />
+      {/* Capacity & SLA Grid */}
+      <div>
+        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Capacity & Allocation</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <StatCard icon={Calendar} label="Available Counselor Slots" value={availableSlots} color="emerald" />
+          <StatCard icon={Users} label="Standby Queue Length" value={standbyStudents} color="indigo" />
+          <StatCard icon={XCircle} label="Cancellations Today" value={cancellationsToday} color="amber" />
+          <StatCard icon={ShieldAlert} label="SLA At Risk Threshold" value={slaAtRisk} color="red" />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-8">
+      {/* Two Column Layout: Master Issues & Recent Cases */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
         {/* Master Issues */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-semibold text-slate-900">Master Issues</h2>
+        <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/80 p-7 shadow-sm">
+          <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 heading-font">Active Master Issue Clusters</h2>
+              <p className="text-xs text-slate-400">AI correlated systemic student challenges</p>
+            </div>
             <button
               onClick={() => navigate('/staff/master-issues')}
-              className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
+              className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100 hover:border-indigo-200 transition-colors"
             >
-              View All →
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {state.masterIssues.map((issue, index) => (
               <motion.div
                 key={issue.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.08 }}
               >
                 <MasterIssueCard
                   issue={issue}
@@ -89,23 +124,27 @@ export default function StaffDashboard() {
         </div>
 
         {/* Recent Cases */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-semibold text-slate-900">Recent Cases</h2>
+        <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/80 p-7 shadow-sm">
+          <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 heading-font">Recent Student Submissions</h2>
+              <p className="text-xs text-slate-400">Chronological inbound support queue</p>
+            </div>
             <button
               onClick={() => navigate('/staff/cases')}
-              className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
+              className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100 hover:border-indigo-200 transition-colors"
             >
-              View All →
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {recentCases.map((c, index) => (
               <motion.div
                 key={c.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.08 }}
               >
                 <CaseCard
                   caseItem={c}
@@ -120,3 +159,4 @@ export default function StaffDashboard() {
     </div>
   );
 }
+

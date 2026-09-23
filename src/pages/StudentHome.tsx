@@ -200,37 +200,41 @@ export default function StudentHome() {
 
   if (phase === 'analyzing') {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
+      <div className="min-h-[75vh] flex items-center justify-center px-4">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
+          className="text-center max-w-lg w-full bg-white/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 p-10 shadow-2xl shadow-indigo-500/10"
         >
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-            className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-indigo-100 flex items-center justify-center"
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+            className="w-20 h-20 mx-auto mb-8 rounded-3xl bg-gradient-to-tr from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30"
           >
-            <Sparkles className="w-8 h-8 text-indigo-600" />
+            <Sparkles className="w-10 h-10 text-white" />
           </motion.div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Analyzing your situation...</h2>
-          <p className="text-slate-500">AI is understanding your needs to provide the best support path.</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-3 heading-font">Analyzing your situation...</h2>
+          <p className="text-slate-500 text-sm leading-relaxed mb-8">Our AI triage engine is classifying your concern and mapping out dedicated academic & wellbeing workflows.</p>
 
-          <div className="mt-8 space-y-3 max-w-sm mx-auto">
-            {['Understanding your concern', 'Classifying support areas', 'Assessing priority'].map((step, i) => (
+          <div className="space-y-3.5 text-left">
+            {[
+              'Extracting core circumstances & sentiment',
+              'Classifying multi-departmental categories',
+              'Evaluating urgency level & available specialists',
+            ].map((step, i) => (
               <motion.div
                 key={step}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.5 }}
-                className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white border border-slate-200"
+                transition={{ delay: i * 0.4 }}
+                className="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/70"
               >
                 <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ delay: i * 0.5, duration: 0.5 }}
-                  className="w-2 h-2 rounded-full bg-indigo-500"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ delay: i * 0.4, duration: 0.8, repeat: Infinity }}
+                  className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-sm shadow-indigo-500/50"
                 />
-                <span className="text-sm text-slate-600">{step}</span>
+                <span className="text-xs sm:text-sm font-semibold text-slate-700">{step}</span>
               </motion.div>
             ))}
           </div>
@@ -241,7 +245,7 @@ export default function StudentHome() {
 
   if (phase === 'result' && state.triageResult) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center py-8">
+      <div className="min-h-[75vh] flex items-center justify-center py-6">
         <TriageResultComponent result={state.triageResult} onContinue={handleCreateCase} />
       </div>
     );
@@ -249,41 +253,41 @@ export default function StudentHome() {
 
   if (phase === 'creating') {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
+      <div className="min-h-[75vh] flex items-center justify-center px-4">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-md"
+          className="text-center max-w-lg w-full bg-white/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 p-10 shadow-2xl shadow-emerald-500/10"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: 'spring', damping: 10 }}
-            className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-emerald-100 flex items-center justify-center"
+            transition={{ type: 'spring', damping: 12, stiffness: 200 }}
+            className="w-20 h-20 mx-auto mb-8 rounded-3xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
           >
-            <Shield className="w-8 h-8 text-emerald-600" />
+            <Shield className="w-10 h-10 text-white" />
           </motion.div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Case Created!</h2>
-          <p className="text-slate-500 mb-4">ServiceNow is orchestrating your support workflows automatically.</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-3 heading-font">Case Successfully Initialized!</h2>
+          <p className="text-slate-500 text-sm leading-relaxed mb-8">CareFlow has provisioned your case and dispatched automated support tasks.</p>
 
-          <div className="space-y-2 text-left">
-            {['Creating support case...', 'Linking to master issue...', 'Initiating workflows...', 'Setting up appointment...'].map((step, i) => (
+          <div className="space-y-3 text-left">
+            {[
+              'Support record assigned to student profile',
+              'Clustered with active campus initiatives',
+              'Advisor extension approval routed',
+              'Standby queue prioritized for earliest counselor slot',
+            ].map((step, i) => (
               <motion.div
                 key={step}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: i * 0.3 }}
-                className="flex items-center gap-2 text-sm text-slate-600"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.25 }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50/60 border border-emerald-100 text-xs sm:text-sm font-medium text-slate-700"
               >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: i * 0.3 + 0.2 }}
-                  className="text-emerald-500"
-                >
+                <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold flex-shrink-0">
                   ✓
-                </motion.div>
-                {step}
+                </div>
+                <span>{step}</span>
               </motion.div>
             ))}
           </div>
@@ -293,81 +297,111 @@ export default function StudentHome() {
   }
 
   return (
-    <div className="min-h-[70vh] flex flex-col">
+    <div className="flex flex-col space-y-16 pb-12">
       {/* Hero Section */}
-      <div className="flex-1 flex items-center justify-center py-12">
+      <div className="pt-6 md:pt-10">
         <StudentInput onSubmit={handleSubmit} />
       </div>
 
-      {/* Feature Cards */}
+      {/* Feature Cards Grid */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="grid grid-cols-3 gap-4 mt-8"
+        transition={{ delay: 0.7, duration: 0.6 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4"
       >
         {[
           {
             icon: Sparkles,
             title: 'AI-Powered Triage',
-            description: 'We understand your situation automatically — no department selection needed.',
-            color: 'text-violet-600',
-            bg: 'bg-violet-50',
+            description: 'Our system analyzes free-form natural language to identify academic, financial, housing, and mental wellbeing concerns simultaneously.',
+            color: 'text-indigo-600',
+            bg: 'bg-indigo-50/80 border-indigo-100',
+            iconGrad: 'from-indigo-600 to-indigo-700',
           },
           {
             icon: Clock,
-            title: 'Instant Workflows',
-            description: 'ServiceNow orchestrates approvals, appointments, and notifications automatically.',
-            color: 'text-indigo-600',
-            bg: 'bg-indigo-50',
+            title: 'Automated Multi-Workflows',
+            description: 'Extension approvals, financial reviews, and emergency accommodations trigger immediately without needing manual departmental visits.',
+            color: 'text-violet-600',
+            bg: 'bg-violet-50/80 border-violet-100',
+            iconGrad: 'from-violet-600 to-purple-700',
           },
           {
             icon: Users,
-            title: 'Continuous Support',
-            description: "You'll receive updates every step of the way until your issue is resolved.",
+            title: 'Smart Standby Queue',
+            description: 'Never miss an appointment. If a counselor slot opens up through cancellations, the system matches high-urgency students in real-time.',
             color: 'text-emerald-600',
-            bg: 'bg-emerald-50',
+            bg: 'bg-emerald-50/80 border-emerald-100',
+            iconGrad: 'from-emerald-600 to-teal-700',
           },
         ].map((feature, index) => (
           <motion.div
             key={feature.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 + index * 0.1 }}
-            className="bg-white rounded-2xl border border-slate-200/60 p-5 shadow-sm"
+            transition={{ delay: 0.8 + index * 0.1 }}
+            className="group relative bg-white/90 backdrop-blur-sm rounded-3xl border border-slate-200/80 p-8 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
           >
-            <div className={`w-10 h-10 rounded-xl ${feature.bg} flex items-center justify-center mb-3`}>
-              <feature.icon className={`w-5 h-5 ${feature.color}`} />
+            <div>
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${feature.iconGrad} text-white flex items-center justify-center mb-6 shadow-md shadow-slate-900/10 group-hover:scale-105 transition-transform`}>
+                <feature.icon className="w-7 h-7" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2.5 heading-font tracking-tight">{feature.title}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{feature.description}</p>
             </div>
-            <h3 className="text-sm font-semibold text-slate-900 mb-1">{feature.title}</h3>
-            <p className="text-xs text-slate-500">{feature.description}</p>
+            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-indigo-600 group-hover:text-indigo-700">
+              <span>Learn more</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
+            </div>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Existing Cases */}
+      {/* Existing Cases Section */}
       {state.cases.filter(c => c.studentId === state.currentStudent.id).length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="mt-8"
+          transition={{ delay: 1 }}
+          className="pt-4"
         >
-          <h2 className="text-lg font-bold text-slate-900 mb-4">Your Active Cases</h2>
-          <div className="space-y-3">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 heading-font">Your Active Support Journeys</h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Track case status, active workflows, and pending advisor approvals</p>
+            </div>
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+              {state.cases.filter(c => c.studentId === state.currentStudent.id).length} Active
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {state.cases
               .filter(c => c.studentId === state.currentStudent.id)
               .map((c) => (
                 <div
                   key={c.id}
                   onClick={() => navigate(`/case/${c.id}`)}
-                  className="bg-white rounded-2xl border border-slate-200/60 p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between"
+                  className="bg-white/90 backdrop-blur-sm rounded-3xl border border-slate-200/80 p-6 shadow-sm hover:shadow-lg hover:border-indigo-200/80 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex items-center justify-between group"
                 >
-                  <div>
-                    <span className="text-xs font-mono text-slate-400">{c.id}</span>
-                    <h3 className="text-sm font-semibold text-slate-900">{c.title}</h3>
+                  <div className="min-w-0 pr-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100/80">{c.id}</span>
+                      <span className="text-xs font-semibold text-slate-400 capitalize">· {c.status.replace('_', ' ')}</span>
+                    </div>
+                    <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">{c.title}</h3>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      {c.categories.map(cat => (
+                        <span key={cat} className="text-[11px] font-medium text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full capitalize">
+                          {cat}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400" />
+                  <div className="w-10 h-10 rounded-2xl bg-slate-50 group-hover:bg-indigo-600 text-slate-400 group-hover:text-white flex items-center justify-center transition-all flex-shrink-0 shadow-sm">
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
                 </div>
               ))}
           </div>
@@ -376,3 +410,4 @@ export default function StudentHome() {
     </div>
   );
 }
+
